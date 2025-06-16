@@ -1,0 +1,11 @@
+# Query 2: Find all academic staff
+# Demonstrates multi-level subclass inference: AcademicStaff includes Professor, AssociateProfessor, Lecturer
+PREFIX : <http://example.org/university#>
+
+SELECT ?staff ?name ?email
+WHERE {
+    ?staff a :AcademicStaff ;
+           :hasName ?name ;
+           :hasEmail ?email .
+}
+ORDER BY ?name

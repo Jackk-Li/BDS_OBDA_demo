@@ -1,0 +1,10 @@
+# Query 3: Find all teachers
+# Demonstrates equivalent class inference: Teacher defined as Employee who teaches courses
+PREFIX : <http://example.org/university#>
+
+SELECT DISTINCT ?teacher ?name
+WHERE {
+    ?teacher a :Teacher ;
+             :hasName ?name .
+}
+ORDER BY ?name

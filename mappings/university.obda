@@ -1,0 +1,62 @@
+[PrefixDeclaration]
+:		http://example.org/university#
+owl:		http://www.w3.org/2002/07/owl#
+rdf:		http://www.w3.org/1999/02/22-rdf-syntax-ns#
+rdfs:		http://www.w3.org/2000/01/rdf-schema#
+xsd:		http://www.w3.org/2001/XMLSchema#
+
+[MappingDeclaration] @collection [[
+
+mappingId	Employee-Base
+target		:employee/{emp_id} a :Employee ; :hasName {name} ; :hasEmail {email} ; :worksInDepartment {department} ; :hasSalary {salary} .
+source		SELECT emp_id, name, email, department, salary FROM employees
+
+mappingId	Professor
+target		:employee/{emp_id} a :Professor .
+source		SELECT emp_id FROM employees WHERE position = 'Professor'
+
+mappingId	AssociateProfessor
+target		:employee/{emp_id} a :AssociateProfessor .
+source		SELECT emp_id FROM employees WHERE position = 'Associate Professor'
+
+mappingId	Lecturer
+target		:employee/{emp_id} a :Lecturer .
+source		SELECT emp_id FROM employees WHERE position = 'Lecturer'
+
+mappingId	AdministrativeStaff
+target		:employee/{emp_id} a :AdministrativeStaff .
+source		SELECT emp_id FROM employees WHERE department = 'Administration'
+
+mappingId	Student-Base
+target		:student/{student_id} a :Student ; :hasName {name} ; :hasEmail {email} ; :hasMajor {major} .
+source		SELECT student_id, name, email, major FROM students
+
+mappingId	UndergraduateStudent
+target		:student/{student_id} a :UndergraduateStudent .
+source		SELECT s.student_id FROM students s WHERE NOT EXISTS (SELECT 1 FROM graduate_students g WHERE g.student_id = s.student_id)
+
+mappingId	GraduateStudent
+target		:student/{student_id} a :GraduateStudent ; :hasThesisTitle {thesis_title} .
+source		SELECT s.student_id, g.thesis_title FROM students s JOIN graduate_students g ON s.student_id = g.student_id
+
+mappingId	Teaching
+target		:employee/{emp_id} :teaches :course/{course_code} .
+source		SELECT DISTINCT emp_id, course_code FROM teaching_records
+
+mappingId	Advising
+target		:student/{student_id} :hasAdvisor :employee/{advisor_id} .
+source		SELECT student_id, advisor_id FROM students WHERE advisor_id IS NOT NULL
+
+mappingId	Course
+target		:course/{course_code} a :Course ; rdfs:label {course_name}^^xsd:string .
+source		SELECT DISTINCT course_code, course_name FROM teaching_records
+
+mappingId	UndergraduateCourse
+target		:course/{course_code} a :UndergraduateCourse .
+source		SELECT DISTINCT course_code FROM teaching_records WHERE course_code LIKE 'CS1%'
+
+mappingId	GraduateCourse
+target		:course/{course_code} a :GraduateCourse .
+source		SELECT DISTINCT course_code FROM teaching_records WHERE course_code LIKE 'CS5%'
+
+]]

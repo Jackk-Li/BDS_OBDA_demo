@@ -1,0 +1,20 @@
+# Query 1: Find all persons
+# Demonstrates subclass inference: Person includes all Employee and Student
+PREFIX : <http://example.org/university#>
+
+SELECT ?person ?name ?type
+WHERE {
+    ?person a :Person ;
+            :hasName ?name .
+    
+    # Optional: show specific type
+    OPTIONAL { 
+        ?person a :Employee . 
+        BIND("Employee" AS ?type) 
+    }
+    OPTIONAL { 
+        ?person a :Student . 
+        BIND("Student" AS ?type) 
+    }
+}
+ORDER BY ?name

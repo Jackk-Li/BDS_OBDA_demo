@@ -1,0 +1,2 @@
+PREFIX : <http://example.org/university#>
+                          SELECT ?x WHERE { ?x a :Employee }

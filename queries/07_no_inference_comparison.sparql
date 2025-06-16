@@ -1,0 +1,10 @@
+# Query 7: Direct query on Employee class (for comparison)
+# If inference is disabled, this query won't return Professor and other subclasses
+PREFIX : <http://example.org/university#>
+
+SELECT ?emp ?name
+WHERE {
+    ?emp a :Employee ;
+         :hasName ?name .
+}
+ORDER BY ?name

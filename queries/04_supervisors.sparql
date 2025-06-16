@@ -1,0 +1,12 @@
+# Query 4: Find all supervisors and their student count
+# Demonstrates complex inference and aggregation
+PREFIX : <http://example.org/university#>
+
+SELECT ?supervisor ?name (COUNT(?student) as ?studentCount)
+WHERE {
+    ?supervisor a :Supervisor ;
+                :hasName ?name .
+    ?student :hasAdvisor ?supervisor .
+}
+GROUP BY ?supervisor ?name
+ORDER BY DESC(?studentCount)

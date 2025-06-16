@@ -1,0 +1,12 @@
+# Query 6: Teaching load by department
+# Demonstrates aggregation queries
+PREFIX : <http://example.org/university#>
+
+SELECT ?dept (COUNT(DISTINCT ?course) as ?courseCount) (COUNT(DISTINCT ?teacher) as ?teacherCount)
+WHERE {
+    ?teacher a :Teacher ;
+             :worksInDepartment ?dept ;
+             :teaches ?course .
+}
+GROUP BY ?dept
+ORDER BY DESC(?courseCount)

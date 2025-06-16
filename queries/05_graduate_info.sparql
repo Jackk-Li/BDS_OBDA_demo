@@ -1,0 +1,12 @@
+# Query 5: Graduate student information query
+# Demonstrates query combining multiple classes and properties
+PREFIX : <http://example.org/university#>
+
+SELECT ?student ?studentName ?thesis ?advisor ?advisorName
+WHERE {
+    ?student a :GraduateStudent ;
+             :hasName ?studentName ;
+             :hasThesisTitle ?thesis ;
+             :hasAdvisor ?advisor .
+    ?advisor :hasName ?advisorName .
+}
