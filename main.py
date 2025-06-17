@@ -91,12 +91,9 @@ class OBDADemoRunner:
         return results
     
     def execute_sparql_cli(self, query: str, enable_reasoning: bool = True) -> List:
-        """通过CLI执行SPARQL查询"""
-        # 创建临时查询文件
         with open('temp_query.sparql', 'w') as f:
             f.write(query)
         
-        # 构建命令
         cmd = [
             'bash', '-c',
             f"{self.config['ontop_path']} query "
@@ -110,18 +107,17 @@ class OBDADemoRunner:
         try:
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
             
-            # 解析结果
             lines = result.stdout.strip().split('\n')
             results = []
-            for line in lines[1:]:  # 跳过标题行
+            for line in lines[1:]:  # Skip header line
                 if line.strip() and not line.startswith('-'):
                     results.append(line.strip())
             
             return results
         except subprocess.TimeoutExpired:
-            return ["查询超时"]
+            return ["overtime: query execution took too long"]
         except Exception as e:
-            return [f"错误: {str(e)}"]
+            return [f"error: {str(e)}"]
         
     def demo_1_basic_hierarchy(self):
         """Demo 1: Basic class hierarchy reasoning"""

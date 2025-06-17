@@ -1,78 +1,82 @@
-# OBDA实证分析：大学数据库本体推理演示
+# OBDA Empirical Analysis: University Database Ontology Reasoning Demonstration
 
-## 实验目的
+## Experimental Objectives
 
-通过一个简单的大学数据库案例，演示：
-1. OBDA如何将关系数据库映射到语义层
-2. 本体推理如何丰富查询结果
-3. SPARQL查询相比SQL的优势
+Through a simple university database case, demonstrate:
+1. How OBDA maps relational databases to the semantic layer
+2. How ontology reasoning enriches query results
+3. The advantages of SPARQL queries compared to SQL
 
-## 快速开始
+## Case Background: University Personnel Management System
 
-1. 启动SPARQL端点：
+Suppose we have a traditional university database that stores information about faculty, staff, and students. The database was designed without considering conceptual hierarchies; tables were simply created according to departmental needs. Now, we aim to use OBDA technology to add a semantic layer to this database, enabling it to answer more intelligent queries.
+
+## Quick Start
+
+1. Start the SPARQL endpoint:
    ```bash
    ./start_endpoint.sh
    ```
 
-2. 运行示例查询：
+2. Run example queries:
    ```bash
    ./run_all_queries.sh
    ```
 
-3. 对比SQL查询：
+3. Compare with SQL queries:
    ```bash
    ./verify_sql.sh
    ```
 
-## 关键概念演示
+## Key Concept Demonstration
 
-### 1. 子类推理
-- 查询`Person`自动包含所有`Employee`和`Student`
-- 查询`AcademicStaff`自动包含`Professor`、`AssociateProfessor`和`Lecturer`
+### 1. Subclass Reasoning
+- Querying `Person` automatically includes all `Employee` and `Student`
+- Querying `AcademicStaff` automatically includes `Professor`, `AssociateProfessor`, and `Lecturer`
 
-### 2. 等价类推理
-- `Teacher`被定义为"有教学任务的员工"
-- 系统自动推理出谁是Teacher
+### 2. Equivalent Class Reasoning
+- `Teacher` is defined as "an employee with teaching duties"
+- The system automatically infers who is a Teacher
 
-### 3. 多层推理
-- `Professor`是`AcademicStaff`的子类
-- `AcademicStaff`是`Employee`的子类
-- `Employee`是`Person`的子类
-- 查询`Person`时，`Professor`会被包含
+### 3. Multi-level Reasoning
+- `Professor` is a subclass of `AcademicStaff`
+- `AcademicStaff` is a subclass of `Employee`
+- `Employee` is a subclass of `Person`
+- When querying `Person`, `Professor` will be included
 
-## 查询说明
+## Query Description
 
-1. **01_all_persons.sparql**: 展示Person类的推理
-2. **02_academic_staff.sparql**: 展示多层子类推理
-3. **03_teachers.sparql**: 展示等价类推理
-4. **04_supervisors.sparql**: 展示反向属性推理
-5. **05_graduate_info.sparql**: 展示复杂查询
-6. **06_dept_teaching_load.sparql**: 展示聚合查询
+1. **01_all_persons.sparql**: Demonstrates reasoning for the Person class
+2. **02_academic_staff.sparql**: Demonstrates multi-level subclass reasoning
+3. **03_teachers.sparql**: Demonstrates equivalent class reasoning
+4. **04_supervisors.sparql**: Demonstrates inverse property reasoning
+5. **05_graduate_info.sparql**: Demonstrates a complex query
+6. **06_dept_teaching_load.sparql**: Demonstrates an aggregate query
 
-## 推理效果对比
+## Reasoning Effect Comparison
 
-| 查询目标 | SQL结果 | SPARQL+推理结果 | 差异原因 |
-|---------|---------|----------------|---------|
-| 所有Person | 无法查询 | 9条 | SQL无Person概念，SPARQL推理包含所有子类 |
-| 所有Teacher | 需要复杂JOIN | 3条 | SPARQL自动推理等价类定义 |
-| 所有AcademicStaff | 需要OR条件 | 4条 | SPARQL自动包含所有子类 |
+| Query Target | SQL Result | SPARQL + Reasoning Result | Reason for Difference |
+|--------------|------------|---------------------------|-----------------------|
+| All Persons  | Cannot query | 9 records                 | SQL has no Person concept, SPARQL reasoning includes all subclasses |
+| All Teachers | Requires complex JOIN | 3 records                 | SPARQL automatically infers equivalent class definition |
+| All AcademicStaff | Requires OR conditions | 4 records                 | SPARQL automatically includes all subclasses |
 
-## 技术架构
+## Technical Architecture
 
 ```
-用户 <--SPARQL--> Ontop <--SQL--> MySQL
-                    |
-                 本体+映射
-                    |
-                  推理引擎
+User <--SPARQL--> Ontop <--SQL--> MySQL
+                   |
+              Ontology + Mappings
+                   |
+             Reasoning Engine
 ```
 
-## 深入学习
+## Further Learning
 
-1. 修改本体文件，添加新的类或属性
-2. 修改映射文件，尝试不同的映射策略
-3. 编写新的SPARQL查询，探索推理能力
-4. 使用调试模式查看查询重写过程：
+1. Modify the ontology file, add new classes or properties
+2. Modify the mapping file, try different mapping strategies
+3. Write new SPARQL queries, explore reasoning capabilities
+4. Use debug mode to view the query rewriting process:
    ```bash
    ./run_query.sh queries/01_all_persons.sparql --log-level=DEBUG
    ```

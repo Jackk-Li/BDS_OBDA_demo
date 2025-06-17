@@ -1,12 +1,13 @@
 #!/bin/bash
-# 运行所有示例查询
+# Run all example queries
 
-echo "OBDA推理演示 - 运行所有查询"
+echo "OBDA Inference Demo - Run All Queries"
 echo "======================================"
 
 for query in queries/*.sparql; do
-    echo -e "\n\n执行查询: $(basename $query)"
+    echo -e "\n\nExecuting query: $(basename $query)"
     echo "--------------------------------------"
+    # Display comments from the query file
     cat "$query" | grep "^#" | sed 's/^# //'
     echo "--------------------------------------"
     
@@ -17,6 +18,7 @@ for query in queries/*.sparql; do
         --query="$query" \
         --outputFormat=csv
     
-    echo -e "\n按Enter继续下一个查询..."
+    echo -e "\nPress Enter to continue to the next query..."
     read
 done
+

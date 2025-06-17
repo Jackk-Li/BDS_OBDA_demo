@@ -1,9 +1,0 @@
-
-PREFIX : <http://example.org/university#>
-
-SELECT ?person ?name
-WHERE {
-    ?person a :Person ;
-            :hasName ?name .
-}
-ORDER BY ?name

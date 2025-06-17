@@ -1,13 +1,13 @@
 #!/bin/bash
-# 运行单个SPARQL查询
+# Run a single SPARQL query
 
 if [ $# -eq 0 ]; then
-    echo "用法: ./run_query.sh <查询文件>"
-    echo "例如: ./run_query.sh queries/01_all_persons.sparql"
+    echo "Usage: ./run_query.sh <query_file>"
+    echo "Example: ./run_query.sh queries/01_all_persons.sparql"
     exit 1
 fi
 
-echo "执行查询: $1"
+echo "Executing query: $1"
 echo "============================="
 
 ./lib/ontop-cli-*/ontop query \
@@ -16,3 +16,4 @@ echo "============================="
     --properties=config/university.properties \
     --query="$1" \
     --outputFormat=csv
+

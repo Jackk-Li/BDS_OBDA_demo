@@ -1,9 +1,9 @@
 #!/bin/bash
-# 启动Ontop SPARQL端点
+# Start Ontop SPARQL endpoint
 
-echo "启动Ontop SPARQL端点..."
-echo "访问地址: http://localhost:8080/sparql"
-echo "按Ctrl+C停止服务"
+echo "Starting Ontop SPARQL endpoint..."
+echo "Access URL: http://localhost:8080/sparql"
+echo "Press Ctrl+C to stop the service"
 
 ./lib/ontop-cli-*/ontop endpoint \
     --ontology=ontology/university.ttl \
@@ -11,3 +11,4 @@ echo "按Ctrl+C停止服务"
     --properties=config/university.properties \
     --port=8080 \
     --lazy
+
